@@ -45,7 +45,7 @@ function renderHeader() {
     html += '<button is="paper-icon-button-light" class="headerSyncButton syncButton headerButton headerButtonRight hide"><span class="material-icons groups" aria-hidden="true"></span></button>';
     html += '<span class="headerSelectedPlayer"></span>';
     html += '<button is="paper-icon-button-light" class="headerAudioPlayerButton audioPlayerButton headerButton headerButtonRight hide"><span class="material-icons music_note" aria-hidden="true"></span></button>';
-    html += '<button is="paper-icon-button-light" class="headerCastButton castButton headerButton headerButtonRight hide"><span class="material-icons cast" aria-hidden="true"></span></button>';
+    //html += '<button is="paper-icon-button-light" class="headerCastButton castButton headerButton headerButtonRight hide"><span class="material-icons cast" aria-hidden="true"></span></button>';
     html += '<button type="button" is="paper-icon-button-light" class="headerButton headerButtonRight headerSearchButton hide"><span class="material-icons search" aria-hidden="true"></span></button>';
     html += '<button is="paper-icon-button-light" class="headerButton headerButtonRight headerUserButton hide"><span class="material-icons person" aria-hidden="true"></span></button>';
     html += '<div class="currentTimeText hide"></div>';
@@ -159,7 +159,7 @@ function updateUserInHeader(user) {
             headerSearchButton.classList.remove('hide');
         }
 
-        if (!layoutManager.tv) {
+        if (headerCastButton && !layoutManager.tv) {
             headerCastButton.classList.remove('hide');
         }
 
@@ -177,7 +177,9 @@ function updateUserInHeader(user) {
         }
     } else {
         headerHomeButton.classList.add('hide');
-        headerCastButton.classList.add('hide');
+        if (headerCastButton) {
+            headerCastButton.classList.add('hide');
+        }
         headerSyncButton.classList.add('hide');
 
         if (headerSearchButton) {
@@ -241,7 +243,7 @@ function bindMenuEvents() {
     headerUserButton.addEventListener('click', onHeaderUserButtonClick);
     headerHomeButton.addEventListener('click', onHeaderHomeButtonClick);
 
-    if (!layoutManager.tv) {
+    if (headerCastButton && !layoutManager.tv) {
         headerCastButton.addEventListener('click', onCastButtonClicked);
     }
 
@@ -515,20 +517,22 @@ function onLogoutClick() {
 }
 
 function updateCastIcon() {
-    const context = document;
-    const info = playbackManager.getPlayerInfo();
-    const icon = headerCastButton.querySelector('.material-icons');
+    if (headerCastButton) {
+        const context = document;
+        const info = playbackManager.getPlayerInfo();
+        const icon = headerCastButton.querySelector('.material-icons');
 
-    icon.classList.remove('cast_connected', 'cast');
+        icon.classList.remove('cast_connected', 'cast');
 
-    if (info && !info.isLocalPlayer) {
-        icon.classList.add('cast_connected');
-        headerCastButton.classList.add('castButton-active');
-        context.querySelector('.headerSelectedPlayer').innerText = info.deviceName || info.name;
-    } else {
-        icon.classList.add('cast');
-        headerCastButton.classList.remove('castButton-active');
-        context.querySelector('.headerSelectedPlayer').innerHTML = '';
+        if (info && !info.isLocalPlayer) {
+            icon.classList.add('cast_connected');
+            headerCastButton.classList.add('castButton-active');
+            context.querySelector('.headerSelectedPlayer').innerText = info.deviceName || info.name;
+        } else {
+            icon.classList.add('cast');
+            headerCastButton.classList.remove('castButton-active');
+            context.querySelector('.headerSelectedPlayer').innerHTML = '';
+        }
     }
 }
 

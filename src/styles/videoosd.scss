@@ -179,7 +179,7 @@
 }
 
 @media all and (max-width: 30em) {
-    .btnUserRating,
+    //.btnUserRating,
     .osdMediaInfo,
     .osdPoster {
         display: none !important;
@@ -193,15 +193,8 @@
 }
 
 @media all and (max-width: 43em) {
-    .videoOsdBottom .volumeButtons,
+    .videoOsdBottom .osdVolumeSliderContainer,
     .osdMediaStatus span {
-        display: none !important;
-    }
-}
-
-@media all and (max-width: 50em) {
-    .videoOsdBottom .btnFastForward,
-    .videoOsdBottom .btnRewind {
         display: none !important;
     }
 }
@@ -210,6 +203,12 @@
     .videoOsdBottom .endsAtText {
         display: none !important;
     }
+}
+
+.videoOsdBottom .btnVideoOsdSettings,
+.videoOsdBottom .btnAirPlay,
+.videoOsdBottom .btnPip {
+    display: none !important;
 }
 
 .syncPlayContainer {
