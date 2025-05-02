@@ -105,6 +105,7 @@ function searchForIdentificationResults(page) {
 function showIdentificationSearchResults(page, results) {
     const identificationSearchResults = page.querySelector('.identificationSearchResults');
 
+    page.querySelector('.btnBack').classList.remove('hide');
     page.querySelector('.popupIdentifyForm').classList.add('hide');
     identificationSearchResults.classList.remove('hide');
     page.querySelector('.identifyOptionsForm').classList.add('hide');
@@ -154,6 +155,7 @@ function finishFindNewDialog(dlg, identifyResult) {
 function showIdentifyOptions(page, identifyResult) {
     const identifyOptionsForm = page.querySelector('.identifyOptionsForm');
 
+    page.querySelector('.btnBack').classList.remove('hide');
     page.querySelector('.popupIdentifyForm').classList.add('hide');
     page.querySelector('.identificationSearchResults').classList.add('hide');
     identifyOptionsForm.classList.remove('hide');
@@ -383,6 +385,21 @@ function showEditor(itemId) {
 
         dlg.querySelector('.btnCancel').addEventListener('click', () => {
             dialogHelper.close(dlg);
+        });
+
+        dlg.querySelector('.btnBack').addEventListener('click', () => {
+            if (!dlg.querySelector('.identifyOptionsForm').classList.contains('hide')) {
+                loading.show();
+                dlg.querySelector('.identifyOptionsForm').classList.add('hide');
+                dlg.querySelector('.identificationSearchResults').classList.remove('hide');
+                loading.hide();
+            } else if (!dlg.querySelector('.identificationSearchResults').classList.contains('hide')) {
+                loading.show();
+                dlg.querySelector('.identificationSearchResults').classList.add('hide');
+                dlg.querySelector('.popupIdentifyForm').classList.remove('hide');
+                dlg.querySelector('.btnBack').classList.add('hide');
+                loading.hide();
+            }
         });
 
         dlg.classList.add('identifyDialog');

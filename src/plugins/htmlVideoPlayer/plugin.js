@@ -44,6 +44,7 @@ import { PluginType } from '../../types/plugin.ts';
 import Events from '../../utils/events.ts';
 import { includesAny } from '../../utils/container.ts';
 import { isHls } from '../../utils/mediaSource.ts';
+import myConfig from '../../config.local.json';
 
 /**
  * Returns resolved URL.
@@ -116,9 +117,34 @@ function enableNativeTrackSupport(mediaSource, track) {
 
 function requireHlsPlayer(callback) {
     import('hls.js/dist/hls.js').then(({ default: hls }) => {
+        class CustomHlsLoader extends hls.DefaultConfig.loader {
+            load(context1, config, callbacks) {
+                // Custom behavior
+                if (context1.type === 'manifest' || context1.type === 'level') {
+                    const onSuccess = callbacks.onSuccess;
+                    callbacks.onSuccess = (response, stats, context2) => {
+                        const original = response.data;
+                        // Remove segment lines with skipped domain
+                        const modified = original
+                            .split('\n')
+                            .filter(line => {
+                                return !(line.endsWith('.ts') && myConfig.skipDomains.some(domain => line.includes(domain)));
+                            })
+                            .join('\n');
+
+                        response.data = modified;
+                        onSuccess(response, stats, context2);
+                    };
+                }
+                super.load(context1, config, callbacks);
+            }
+        }
         hls.DefaultConfig.lowLatencyMode = false;
         hls.DefaultConfig.backBufferLength = Infinity;
         hls.DefaultConfig.liveBackBufferLength = 90;
+        if (myConfig.enableCustomHlsLoader) {
+            hls.DefaultConfig.loader = CustomHlsLoader;
+        }
         window.Hls = hls;
         callback();
     });
@@ -593,6 +619,21 @@ export class HtmlVideoPlayer {
         } else {
             return null;
         }
+    }
+
+    getFrame() {
+        const videoElement = this.#mediaElement;
+        if (!videoElement || videoElement.readyState < 2) {
+        // Not enough data to get a frame
+            return null;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        // Return as data URL (PNG)
+        return canvas.toDataURL('image/png');
     }
 
     setSubtitleOffset = debounce(this._setSubtitleOffset, 100);

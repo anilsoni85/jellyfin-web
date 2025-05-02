@@ -14,6 +14,7 @@ import { LibraryTab } from 'types/libraryTab';
 import { getBackdropShape, getPortraitShape } from 'utils/card';
 import Dashboard from 'utils/dashboard';
 import Events from 'utils/events';
+import config from '../../config.local.json';
 
 import 'elements/emby-scroller/emby-scroller';
 import 'elements/emby-itemscontainer/emby-itemscontainer';
@@ -226,18 +227,11 @@ function loadSuggestionsTab(view, params, tabContent) {
     loadSuggestions(tabContent, userId);
 }
 
+const tabs = config.tabs.filter(tab => !tab.hide);
+const suggestionsTabIndex = tabs.findIndex(tab => tab.name === 'Suggestions');
+
 function getTabs() {
-    return [{
-        name: globalize.translate('Movies')
-    }, {
-        name: globalize.translate('Suggestions')
-    }, {
-        name: globalize.translate('Favorites')
-    }, {
-        name: globalize.translate('Collections')
-    }, {
-        name: globalize.translate('Genres')
-    }];
+    return tabs;
 }
 
 function getDefaultTabIndex(folderId) {
@@ -278,21 +272,8 @@ export default function (view, params) {
     }
 
     const getTabController = (page, index, callback) => {
-        let depends = 'movies';
-
-        switch (index) {
-            case 1:
-                depends = 'moviesrecommended.js';
-                break;
-
-            case 3:
-                depends = 'moviecollections';
-                break;
-
-            case 4:
-                depends = 'moviegenres';
-                break;
-        }
+        const depends = tabs[index].depends;
+        const mode = tabs[index].mode;
 
         import(`../movies/${depends}`).then(({ default: ControllerFactory }) => {
             let tabContent;
@@ -309,9 +290,9 @@ export default function (view, params) {
 
                 if (index === suggestionsTabIndex) {
                     controller = this;
-                } else if (index == 0 || index == 2) {
+                } else if (mode) {
                     controller = new ControllerFactory(view, params, tabContent, {
-                        mode: index ? 'favorites' : 'movies'
+                        mode: mode
                     });
                 } else {
                     controller = new ControllerFactory(view, params, tabContent);
@@ -361,7 +342,6 @@ export default function (view, params) {
     }
 
     let currentTabIndex = parseInt(params.tab || getDefaultTabIndex(params.topParentId), 10);
-    const suggestionsTabIndex = 1;
 
     this.initTab = function () {
         const tabContent = view.querySelector(".pageTabContent[data-index='" + suggestionsTabIndex + "']");

@@ -1,6 +1,6 @@
 {
   "includeCorsCredentials": false,
-  "multiserver": false,
+  "multiserver": true,
   "themes": [
     {
       "name": "Apple TV",
@@ -30,7 +30,7 @@
     }
   ],
   "menuLinks": [],
-  "servers": [],
+  "servers": [ "http://rpi5.local:8096", "https://demo.jellyfin.org/stable" ],
   "plugins": [
     "playAccessValidation/plugin",
     "experimentalWarnings/plugin",

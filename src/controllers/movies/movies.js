@@ -11,6 +11,8 @@ import { setFilterStatus } from 'components/filterdialog/filterIndicator';
 
 import '../../elements/emby-itemscontainer/emby-itemscontainer';
 
+import config from '../../config.local.json';
+
 export default function (view, params, tabContent, options) {
     const onViewStyleChange = () => {
         if (this.getCurrentViewStyle() == 'List') {
@@ -302,6 +304,11 @@ export default function (view, params, tabContent, options) {
 
     if (options.mode === 'favorites') {
         query.IsFavorite = true;
+    } else if (options.mode in config.modeFilterConfig) {
+        const filterConfig = config.modeFilterConfig[options.mode];
+        console.log(filterConfig);
+        query[filterConfig.field] = filterConfig.value;
+        console.log(query);
     }
 
     query = userSettings.loadQuerySettings(savedQueryKey, query);

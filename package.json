@@ -131,7 +131,8 @@
     "swiper": "11.2.8",
     "usehooks-ts": "3.1.1",
     "webcomponents.js": "0.7.24",
-    "whatwg-fetch": "3.6.20"
+    "whatwg-fetch": "3.6.20",
+    "tesseract.js": "6.0.1"
   },
   "optionalDependencies": {
     "sass-embedded": "1.89.2"
@@ -164,7 +165,8 @@
     "lint": "eslint \"./\"",
     "test": "vitest --watch=false --config vite.config.ts",
     "test:watch": "vitest --config vite.config.ts",
-    "stylelint": "stylelint \"src/**/*.{css,scss}\""
+    "stylelint": "stylelint \"src/**/*.{css,scss}\"",
+    "deploy": "npm run build:production && rsync -avz --exclude='.DS_Store' --rsync-path='sudo rsync' ~/dev/gh/anilsoni85/jellyfin-web/dist/ anils@rpi5:/app/jellyfin/web/"
   },
   "engines": {
     "node": ">=20.0.0",
