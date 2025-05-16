@@ -1099,6 +1099,24 @@ export default function (view) {
         setTimeout(resetIdle, 0);
     }
 
+    function showItemIdentifier() {
+        if (!currentItem) return;
+        // const btn = this;
+        console.log('showItemIdentifier - current Item is ', currentItem);
+        import('../../../components/itemidentifier/itemidentifier').then((itemIdentifier) => {
+            suppressShortcutKeys = true;
+            itemIdentifier.show(currentItem.Id, currentItem.ServerId)
+                .then((result) => {
+                    console.log('showItemIdentifier - Resolved successfully.', result);
+                    suppressShortcutKeys = false;
+                })
+                .catch((error) => {
+                    console.error('showItemIdentifier - Error occured:', error);
+                    suppressShortcutKeys = false;
+                });
+        });
+    }
+
     function showSubtitleTrackSelection() {
         const player = currentPlayer;
         const streams = playbackManager.subtitleTracks(player);
@@ -1212,6 +1230,8 @@ export default function (view) {
     }
 
     function onKeyDown(e) {
+        if (suppressShortcutKeys) return;
+
         clickedElement = e.target;
 
         const isKeyModified = e.ctrlKey || e.altKey || e.metaKey;
@@ -1639,6 +1659,7 @@ export default function (view) {
     let playbackStartTimeTicks = 0;
     let subtitleSyncOverlay;
     let trickplayResolution = null;
+    let suppressShortcutKeys = false;
     const nowPlayingVolumeSlider = view.querySelector('.osdVolumeSlider');
     const nowPlayingVolumeSliderContainer = view.querySelector('.osdVolumeSliderContainer');
     const nowPlayingPositionSlider = view.querySelector('.osdPositionSlider');
@@ -1957,6 +1978,7 @@ export default function (view) {
     });
     view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
     view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
+    view.querySelector('.btnIdentify').addEventListener('click', showItemIdentifier);
 
     // HACK: Remove `emby-button` from the rating button to make it look like the other buttons
     view.querySelector('.btnUserRating').classList.remove('emby-button');
