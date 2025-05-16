@@ -438,6 +438,7 @@ export function setContentType(parent, contentType) {
     const hasChapterOptions = !contentType /* Mixed */ || CHAPTER_CONTENT_TYPES.includes(contentType);
     parent.querySelector('.trickplaySettingsSection').classList.toggle('hide', !hasChapterOptions);
     parent.querySelector('.chapterSettingsSection').classList.toggle('hide', !hasChapterOptions);
+    parent.querySelector('.m3u8SupportSection').classList.toggle('hide', !hasChapterOptions);
 
     if (contentType === 'tvshows') {
         parent.querySelector('.chkAutomaticallyGroupSeriesContainer').classList.remove('hide');
@@ -603,6 +604,7 @@ export function getLibraryOptions(parent) {
         AutomaticallyAddToCollection: parent.querySelector('#chkAutomaticallyAddToCollection').checked,
         PreferNonstandardArtistsTag: parent.querySelector('#chkPreferNonstandardArtistsTag').checked,
         UseCustomTagDelimiters: parent.querySelector('#chkUseCustomTagDelimiters').checked,
+        EnableM3u8Support: parent.querySelector('.chkM3u8Support').checked,
         MetadataSavers: Array.prototype.map.call(Array.prototype.filter.call(parent.querySelectorAll('.chkMetadataSaver'), elem => {
             return elem.checked;
         }), elem => {
@@ -671,6 +673,7 @@ export function setLibraryOptions(parent, options) {
     parent.querySelector('#chkAutomaticallyAddToCollection').checked = options.AutomaticallyAddToCollection;
     parent.querySelector('#chkPreferNonstandardArtistsTag').checked = options.PreferNonstandardArtistsTag;
     parent.querySelector('#chkUseCustomTagDelimiters').checked = options.UseCustomTagDelimiters;
+    parent.querySelector('.chkM3u8Support').checked = options.EnableM3u8Support || false;
     Array.prototype.forEach.call(parent.querySelectorAll('.chkMetadataSaver'), elem => {
         elem.checked = options.MetadataSavers ? options.MetadataSavers.includes(elem.getAttribute('data-pluginname')) : elem.getAttribute('data-defaultenabled') === 'true';
     });
