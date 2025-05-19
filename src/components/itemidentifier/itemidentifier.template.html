@@ -1,8 +1,13 @@
-<div class="formDialogHeader">
-    <button is="paper-icon-button-light" class="btnCancel autoSize" tabindex="-1" title="${ButtonBack}">
-        <span class="material-icons arrow_back" aria-hidden="true"></span>
+<div class="formDialogHeader" style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center;">
+        <button is="paper-icon-button-light" class="btnBack autoSize hide" tabindex="-1" title="${ButtonBack}">
+            <span class="material-icons arrow_back" aria-hidden="true"></span>
+        </button>
+        <h3 class="formDialogHeaderTitle" style="margin-left: 8px;">${Identify}</h3>
+    </div>
+    <button is="paper-icon-button-light" class="btnCancel autoSize" tabindex="-1" title="${ButtonCancel}">
+        <span class="material-icons close" aria-hidden="true"></span>
     </button>
-    <h3 class="formDialogHeaderTitle">${Identify}</h3>
 </div>
 
 <div class="formDialogContent smoothScrollY">
@@ -15,7 +20,7 @@
                 <div class="txtPath fieldDescription"></div>
             </div>
             <div class="inputContainer">
-                <input is="emby-input" type="text" id="txtLookupName" class="identifyField" data-lookup="Name" label="${LabelName}" />
+                <input is="emby-input" type="text" id="txtLookupName" class="identifyField" data-lookup="Name" label="${LabelName}" autocorrect="off" autocapitalize="off" spellcheck="false" />
             </div>
             <div class="fldLookupYear inputContainer">
                 <input is="emby-input" type="number" id="txtLookupYear" class="identifyField" data-lookup="Year" pattern="[0-9]*" min="1800" label="${LabelYear}" />
