@@ -292,7 +292,7 @@ export default function (view) {
 
     function startOsdHideTimer() {
         stopOsdHideTimer();
-        osdHideTimeout = setTimeout(hideOsd, 3e3);
+        osdHideTimeout = setTimeout(hideOsd, osdHideAfter);
     }
 
     function stopOsdHideTimer() {
@@ -1117,6 +1117,16 @@ export default function (view) {
         });
     }
 
+    function showCast() {
+        if (!currentItem) return;
+        // const btn = this;
+        console.log('showCast - current Item is ', currentItem);
+        import('../../../components/castview/castview').then((castview) => {
+            suppressShortcutKeys = true;
+            castview.show(currentItem.Id, currentItem.ServerId);
+        });
+    }
+
     function showSubtitleTrackSelection() {
         const player = currentPlayer;
         const streams = playbackManager.subtitleTracks(player);
@@ -1649,6 +1659,7 @@ export default function (view) {
     let currentVisibleMenu;
     let statsOverlay;
     let osdHideTimeout;
+    const osdHideAfter = 10e3; // 10 seconds
     let lastPointerMoveData;
     const self = this;
     let currentPlayerSupportedCommands = [];
@@ -1979,6 +1990,7 @@ export default function (view) {
     view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
     view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
     view.querySelector('.btnIdentify').addEventListener('click', showItemIdentifier);
+    view.querySelector('.btnCast').addEventListener('click', showCast);
 
     // HACK: Remove `emby-button` from the rating button to make it look like the other buttons
     view.querySelector('.btnUserRating').classList.remove('emby-button');

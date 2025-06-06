@@ -157,7 +157,8 @@
     "lint": "eslint \"./\"",
     "test": "vitest --watch=false --config vite.config.ts",
     "test:watch": "vitest --config vite.config.ts",
-    "stylelint": "stylelint \"src/**/*.{css,scss}\""
+    "stylelint": "stylelint \"src/**/*.{css,scss}\"",
+    "deploy": "npm run build:production && rsync -avz /Volumes/disk2/anils/dev/gh/anilsoni85/jellyfin-web/dist/ anils@rpi:/mnt/pendrive1/app/jellyfin/web/"
   },
   "engines": {
     "node": ">=20.0.0",

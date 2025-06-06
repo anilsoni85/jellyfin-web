@@ -30,7 +30,7 @@
     }
   ],
   "menuLinks": [],
-  "servers": [],
+  "servers": [ "http://rpi:8096" ],
   "plugins": [
     "playAccessValidation/plugin",
     "experimentalWarnings/plugin",
