@@ -39,6 +39,7 @@ import { includesAny } from '../../utils/container.ts';
 import { isHls } from '../../utils/mediaSource.ts';
 import debounce from 'lodash-es/debounce';
 import { MediaError } from 'types/mediaError';
+import myConfig from '../../anils_config.json';
 
 /**
  * Returns resolved URL.
@@ -111,9 +112,34 @@ function enableNativeTrackSupport(mediaSource, track) {
 
 function requireHlsPlayer(callback) {
     import('hls.js/dist/hls.js').then(({ default: hls }) => {
+        class CustomHlsLoader extends hls.DefaultConfig.loader {
+            load(context1, config, callbacks) {
+                // Custom behavior
+                if (context1.type === 'manifest' || context1.type === 'level') {
+                    const onSuccess = callbacks.onSuccess;
+                    callbacks.onSuccess = (response, stats, context2) => {
+                        const original = response.data;
+                        // Remove segment lines with skipped domain
+                        const modified = original
+                            .split('\n')
+                            .filter(line => {
+                                return !(line.endsWith('.ts') && myConfig.skipDomains.some(domain => line.includes(domain)));
+                            })
+                            .join('\n');
+
+                        response.data = modified;
+                        onSuccess(response, stats, context2);
+                    };
+                }
+                super.load(context1, config, callbacks);
+            }
+        }
         hls.DefaultConfig.lowLatencyMode = false;
         hls.DefaultConfig.backBufferLength = Infinity;
         hls.DefaultConfig.liveBackBufferLength = 90;
+        if (myConfig.enableCustomHlsLoader) {
+            hls.DefaultConfig.loader = CustomHlsLoader;
+        }
         window.Hls = hls;
         callback();
     });
