@@ -17,4 +17,4 @@ config.json
 *.sw?
 
 .DS_Store
-src/anils_config.json
+src/config.local.json

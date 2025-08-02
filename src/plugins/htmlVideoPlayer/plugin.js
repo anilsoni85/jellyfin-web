@@ -39,7 +39,7 @@ import { includesAny } from '../../utils/container.ts';
 import { isHls } from '../../utils/mediaSource.ts';
 import debounce from 'lodash-es/debounce';
 import { MediaError } from 'types/mediaError';
-import myConfig from '../../anils_config.json';
+import myConfig from '../../config.local.json';
 
 /**
  * Returns resolved URL.
