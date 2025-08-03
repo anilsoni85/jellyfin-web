@@ -1127,6 +1127,23 @@ export default function (view) {
         });
     }
 
+    function deleteItem() {
+        if (!currentItem) return;
+        console.log('deleteItem - current Item is ', currentItem);
+
+        import('../../../scripts/deleteHelper').then((deleteHelper) => {
+            deleteHelper.deleteItem({
+                item: currentItem,
+                navigate: false
+            }).then((result) => {
+                console.log('deleteItem - Deleted successfully, play next track', result);
+                playbackManager.nextTrack(currentPlayer);
+            }).catch((error) => {
+                console.error('deleteItem - Error occured:', error);
+            });
+        });
+    }
+
     function showSubtitleTrackSelection() {
         const player = currentPlayer;
         const streams = playbackManager.subtitleTracks(player);
@@ -1991,6 +2008,7 @@ export default function (view) {
     view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
     view.querySelector('.btnIdentify').addEventListener('click', showItemIdentifier);
     view.querySelector('.btnCast').addEventListener('click', showCast);
+    view.querySelector('.btnDelete').addEventListener('click', deleteItem);
 
     // HACK: Remove `emby-button` from the rating button to make it look like the other buttons
     view.querySelector('.btnUserRating').classList.remove('emby-button');
