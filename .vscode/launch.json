@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Jellyfin Web in Edge",
+      "type": "msedge",
+      "request": "launch",
+      // Change this to whatever port your jellyfin-web dev server runs on
+      "url": "http://localhost:8080",
+      // Optional: Set your workspace root to jellyfin-web folder
+      "webRoot": "${workspaceFolder}/src",
+      // Make sure it launches Edge on macOS
+      "runtimeExecutable": "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
+      "runtimeArgs": [
+        "--remote-debugging-port=9222",
+        "--auto-open-devtools-for-tabs" // Useful to auto-open DevTools on start
+      ],
+      "sourceMaps": true
+    }
+  ]
+}
