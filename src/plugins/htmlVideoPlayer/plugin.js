@@ -615,6 +615,21 @@ export class HtmlVideoPlayer {
         }
     }
 
+    getFrame() {
+        const videoElement = this.#mediaElement;
+        if (!videoElement || videoElement.readyState < 2) {
+        // Not enough data to get a frame
+            return null;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        // Return as data URL (PNG)
+        return canvas.toDataURL('image/png');
+    }
+
     setSubtitleOffset = debounce(this._setSubtitleOffset, 100);
 
     /**
