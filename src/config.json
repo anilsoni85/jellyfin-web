@@ -30,7 +30,7 @@
     }
   ],
   "menuLinks": [],
-  "servers": [ "http://rpi5:8096", "https://demo.jellyfin.org/stable" ],
+  "servers": [ "http://rpi5.local:8096", "https://demo.jellyfin.org/stable" ],
   "plugins": [
     "playAccessValidation/plugin",
     "experimentalWarnings/plugin",
