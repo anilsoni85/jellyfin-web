@@ -37,7 +37,15 @@ const KeyNames = {
     // MediaTrackNext (Tizen)
     10233: 'MediaTrackNext',
     // MediaPlayPause (Tizen)
-    10252: 'MediaPlayPause'
+    10252: 'MediaPlayPause',
+
+    // FireStick Remote
+    179: 'MediaPlayPause',
+    4: 'Back',
+    228: 'MediaFastForward',
+    227: 'MediaRewind',
+    93: 'MediaTrackPrevious',
+    92: 'MediaTrackNext'
 };
 
 /**

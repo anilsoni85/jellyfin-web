@@ -1129,6 +1129,17 @@ export default function (view) {
 
     function deleteItem() {
         if (!currentItem) return;
+        // const player = currentPlayer;
+        // const frameImg = player.getFrame();
+
+        // import('./frameAnalyzer').then((module) => {
+        //     const analyzer = new module.FrameAnalyzer();
+        //     analyzer.analyzeFrameText(frameImg).then((result) => {
+        //         console.log('Frame analysis result:', result);
+        //     }).catch((error) => {
+        //         console.error('Frame analysis failed:', error);
+        //     });
+        // });
         console.log('deleteItem - current Item is ', currentItem);
 
         import('../../../scripts/deleteHelper').then((deleteHelper) => {
@@ -1324,6 +1335,7 @@ export default function (view) {
                 break;
             case 'k':
             case 'K':
+            case 'MediaPlayPause':
                 if (!e.shiftKey) {
                     e.preventDefault();
                     playbackManager.playPause(currentPlayer);
@@ -1334,20 +1346,23 @@ export default function (view) {
             case 'Up':
                 if (!e.shiftKey) {
                     e.preventDefault();
-                    playbackManager.volumeUp(currentPlayer);
+                    //playbackManager.volumeUp(currentPlayer);
+                    playbackManager.previousTrack(currentPlayer);
                 }
                 break;
             case 'ArrowDown':
             case 'Down':
                 if (!e.shiftKey) {
                     e.preventDefault();
-                    playbackManager.volumeDown(currentPlayer);
+                    //playbackManager.volumeDown(currentPlayer);
+                    playbackManager.nextTrack(currentPlayer);
                 }
                 break;
             case 'l':
             case 'L':
             case 'ArrowRight':
             case 'Right':
+            case 'MediaFastForward':
                 if (!e.shiftKey) {
                     e.preventDefault();
                     playbackManager.fastForward(currentPlayer);
@@ -1358,6 +1373,7 @@ export default function (view) {
             case 'J':
             case 'ArrowLeft':
             case 'Left':
+            case 'MediaRewind':
                 if (!e.shiftKey) {
                     e.preventDefault();
                     playbackManager.rewind(currentPlayer);
@@ -1380,6 +1396,7 @@ export default function (view) {
                 break;
             case 'p':
             case 'P':
+            case 'MediaTrackPrevious':
                 if (e.shiftKey) {
                     e.preventDefault();
                     playbackManager.previousTrack(currentPlayer);
@@ -1387,6 +1404,7 @@ export default function (view) {
                 break;
             case 'n':
             case 'N':
+            case 'MediaTrackNext':
                 if (e.shiftKey) {
                     e.preventDefault();
                     playbackManager.nextTrack(currentPlayer);
