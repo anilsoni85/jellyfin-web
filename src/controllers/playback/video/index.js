@@ -1108,7 +1108,22 @@ export default function (view) {
             itemIdentifier.show(currentItem.Id, currentItem.ServerId)
                 .then((result) => {
                     console.log('showItemIdentifier - Resolved successfully.', result);
-                    suppressShortcutKeys = false;
+                    // After successful identification, reload the item from the server
+                    // so UI (title, metadata, user data) reflects any changes made by the identifier.
+                    try {
+                        const apiClient = ServerConnections.getApiClient(currentItem.ServerId);
+                        apiClient.getItem(apiClient.getCurrentUserId(), currentItem.Id).then(function (refreshedItem) {
+                            // getDisplayItem handles TvChannel special-casing and returns { originalItem, displayItem }
+                            getDisplayItem(refreshedItem).then(updateDisplayItem);
+                        }).catch(function (err) {
+                            console.error('Error reloading item after identification:', err);
+                        }).finally(() => {
+                            suppressShortcutKeys = false;
+                        });
+                    } catch (err) {
+                        console.error('Error scheduling reload after identification:', err);
+                        suppressShortcutKeys = false;
+                    }
                 })
                 .catch((error) => {
                     console.error('showItemIdentifier - Error occured:', error);
