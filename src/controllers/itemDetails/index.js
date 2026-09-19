@@ -915,7 +915,7 @@ function renderGenres(page, item, context = inferContext(item)) {
     const genres = item.GenreItems || [];
     const type = context === 'music' ? 'MusicGenre' : 'Genre';
 
-    const html = genres.map(function (p) {
+    const html = genres.slice(0, 5).map(function (p) {
         return '<a style="color:inherit;" class="button-link" is="emby-linkbutton" href="' + appRouter.getRouteUrl({
             Name: p.Name,
             Type: type,

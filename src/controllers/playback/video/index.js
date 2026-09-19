@@ -1103,6 +1103,25 @@ export default function (view) {
         if (!currentItem) return;
         // const btn = this;
         console.log('showItemIdentifier - current Item is ', currentItem);
+
+        // if (!frameAnalyzer) {
+        //     console.log('showItemIdentifier - initializing frameAnalyzer...');
+        //     import('./frameAnalyzer').then((frameAnalyzerModule) => {
+        //         frameAnalyzer = new frameAnalyzerModule.FrameAnalyzer();
+        //     });
+        // }
+
+        // if (frameAnalyzer) {
+        //     console.log('showItemIdentifier - frameAnalyzer reading text from frame...');
+        //     const player = currentPlayer;
+        //     const frameImg = player.getFrame();
+        //     frameAnalyzer.analyzeFrameText(frameImg).then((result) => {
+        //         console.log('Frame analysis result:', result);
+        //     }).catch((error) => {
+        //         console.error('Frame analysis failed:', error);
+        //     });
+        // }
+
         import('../../../components/itemidentifier/itemidentifier').then((itemIdentifier) => {
             suppressShortcutKeys = true;
             itemIdentifier.show(currentItem.Id, currentItem.ServerId)
@@ -1144,17 +1163,6 @@ export default function (view) {
 
     function deleteItem() {
         if (!currentItem) return;
-        // const player = currentPlayer;
-        // const frameImg = player.getFrame();
-
-        // import('./frameAnalyzer').then((module) => {
-        //     const analyzer = new module.FrameAnalyzer();
-        //     analyzer.analyzeFrameText(frameImg).then((result) => {
-        //         console.log('Frame analysis result:', result);
-        //     }).catch((error) => {
-        //         console.error('Frame analysis failed:', error);
-        //     });
-        // });
         console.log('deleteItem - current Item is ', currentItem);
 
         import('../../../scripts/deleteHelper').then((deleteHelper) => {
@@ -1718,6 +1726,7 @@ export default function (view) {
     let programStartDateMs = 0;
     let programEndDateMs = 0;
     let playbackStartTimeTicks = 0;
+    let frameAnalyzer;
     let subtitleSyncOverlay;
     let trickplayResolution = null;
     let suppressShortcutKeys = false;

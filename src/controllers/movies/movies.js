@@ -298,6 +298,9 @@ export default function (view, params, tabContent, options) {
         const filterConfig = config.modeFilterConfig[options.mode];
         console.log(filterConfig);
         query[filterConfig.field] = filterConfig.value;
+        if (filterConfig.isFavorite !== undefined) {
+            query.IsFavorite = filterConfig.isFavorite;
+        }
         console.log(query);
     }
 
